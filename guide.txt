@@ -54,8 +54,8 @@ Part 2: Partitioning the disks
     - You should see the new partitions that you created
     # mkfs.fat -F32 /dev/{EFI_PARTITION_NAME}
     *- If you created a swap partition run the following two commands
-      *# mkswap /dev/{SWAP_PARTITION_NAME}
-      *# swapon /dev/{SWAP_PARTITION_NAME}
+      # mkswap /dev/{SWAP_PARTITION_NAME}
+      # swapon /dev/{SWAP_PARTITION_NAME}
     * Chose a filesystem
       *- For modern systems, BTRFS is reccomended
         # mkfs.btrfs /dev/{LINUX_SYSTEM_PARTITION_NAME}
@@ -65,7 +65,7 @@ Part 2: Partitioning the disks
 
 Part 3: Mounting the disks and preparing the base arch install
     # mount /dev/{LINUX_SYSTEM_PARTITION_NAME} /mnt
-    # mount /dev/{EFI_PARTITION_NAME} /mnt/boot/efi
+    # mount --mkdir /dev/{EFI_PARTITION_NAME} /mnt/boot/efi
     # pacstrap /mnt base base-devel linux linux-firmware vim git grub efibootmgr networkmanager
     # genfstab -U /mnt >> /mnt/etc/fstab
     # arch-chroot /mnt
