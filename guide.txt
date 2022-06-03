@@ -171,7 +171,7 @@ part 7: Choosing and installing a desktop environment or window manager (refered
     - After the restart, in the top-left you will see a selection with all installed desktop environments and window managers
 
 
-part 7.1: KDE Plasma (reccomended for ex-wnidows users)
+part 7.1: KDE Plasma (reccomended for ex-windows users)
     # sudo pacman -S plasma-desktop plasma-pa konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension
     ! When running a web browser in kde, you might be prompted to create a wallet
     ! If that happens, close the popup and your browser, make sure you properly installed all kwallet components listed below, and try to open your browser again
