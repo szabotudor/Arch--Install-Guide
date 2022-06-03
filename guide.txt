@@ -1,0 +1,140 @@
+!! This guide only covers installing arch in EFI/UEFI mode !!
+If you want to install arch in compatibility BIOS mode, refer to the official guide (https://wiki.archlinux.org/title/Installation_guide#Example_layouts) along with this one
+
+Lines prefixed with '-' are instructions on what to do
+Lines prefixed with '#' are commands that need to be run in the console
+Lines prefixed with '%' are examples for commands that may be too ambiguous for some users
+Words in curly brackets like {THIS} should be replaced with the apropriate command or word depending on the context
+Word lists prefixed with '*' represent multiple choices
+Words in apostrophes 'word_1 + word_2 + ... + word_n' usually refer to keyboard commands/shortcuts
+Words in straight brackets refer to parts like [Part n]
+
+
+!! For a minimal install follow instructions up to and including [Part 6] !!
+
+
+!! You should probably look up a tutorial on vim if you don't know how to use it !!
+
+
+Part 0: Set up install media
+    - Download the iso from the official arch website
+    - Flash it to a usb drive and boot from it (you can find on google how to do this)
+
+
+Part 1: Connect to the internet (if you have a wired conenction, skip to the last step in [Part 1])
+    # iwctl
+    # station list
+    - A list of 'stations' (wifi modules in the PC) will be printed
+    # station {STATION_NAME} get-networks
+    - A list of networks will be printed
+    # station {STATION_NAME} connect {NETWORK_NAME}
+    * # 'ctrl + d'
+      # exit
+    # timedatectl set-ntp true
+
+
+Part 2: Partitioning the disks 
+    # lsblk
+    - A list of disks and their partitions will be printed
+    - Carefuly choose the correct disk you want to format
+    # cfdisk /dev/{DISK_NAME}
+    - You will need to make a 512M partition and set it's type to "EFI system partition"
+    * - If you have less than 8G of RAM, it is reccomended to also create a swap partition of at leas 4G, and set it's type to "Linux Swap"
+      - If you want to be able to use the Hibernate Feature, create a swap partition of at leas {RAM_SIZE + 1.1G}
+    - Use the remainder of the disk to create a new partition, and leave it's type to default
+    - Write the changes to disk
+    # lsblk
+    - You should see the new partitions that you created
+    # mkfs.fat -F32 /dev/{EFI_PARTITION_NAME}
+    * - If you created a swap
+        # mkswap /dev/{SWAP_PARTITION_NAME}
+        # swapon /dev/{SWAP_PARTITION_NAME}
+    * - For modern systems, BTRFS is reccomended
+        # mkfs.btrfs /dev/{LINUX_SYSTEM_PARTITION_NAME}
+      - For older systems, use EXT4
+        # mkfs.ext4 /dev/{LINUX_SYSTEM_PARTITION_NAME}
+
+
+Part 3: Mounting the disks and preparing the base arch install
+    # mount /dev/{LINUX_SYSTEM_PARTITION_NAME} /mnt
+    # mount /dev/{EFI_PARTITION_NAME} /mnt/boot/efi
+    # pacstrap /mnt base base-devel linux linux-firmware vim git grub efibootmgr networkmanager
+    # genfstab -U /mnt >> /mnt/etc/fstab
+    # arch-chroot /mnt
+
+
+Part 4: Setting up the bootloader and other components of the system
+    # ls /usr/share/zoneinfo/
+    - This will print out a list of regions
+    # ls /usr/share/zoneinfo/{REGION}
+    - This will print out a list of cities in that region
+    # ln -sf /usr/share/zoneinfo/{REGION}/{CITY} /etc/localtime
+      % ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
+      % ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+    # hwclock --systohc
+    # vim /etc/locale.gen
+    - Uncomment the locale of your choice
+      % choose "en_US.UTF-8 UTF-8" if you're not sure
+    # 'esc'
+    # 'shift + :'
+    # wq
+    # 'enter/return'
+    # locale-gen
+    # echo "LANG={LOCALE}" >> /etc/locale.conf
+      % echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+      - If you chose another locale, use that, without the last part sepparated by a space in the locale.gen
+    # echo "{HOSTNAME}" >> /etc/hostname
+      % echo "john-laptop" >> /etc/hostname
+      % echo "localhost" >> /etc/hostname
+    # mkinitcpio -P
+    - Install microcode for your processor
+      * # pacman -S amd-ucode
+        # pacman -S intel-ucode
+    - Install the grub bootloader
+      * - Sometimes, manufacturers implement EFI differently, and you'll have to make the install removable
+          # grub-install --target=x86_64-efi --efi-directory=esp --removable
+        - but for most EFI/UEFI systems you can use the default GRUB installation
+          # grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+    # grub-mkconfig -o /boot/grub/grub.cfg
+    # systemctl enable NetworkManager
+
+
+Part 5: Setting up users and passwords
+    # passwd
+    - Set your ROOT password
+    # pacman -S vi sudo
+    # useradd --create-home {USER}
+      % useradd --create-home john
+    # passwd {USER}
+    - Set you main user password (usually this is set the same as the root password)
+    # usermod -aG wheel {USER}
+    # visudo
+    - Uncomment the first line where "%wheel ALL=(ALL) ALL" appears
+
+
+Part 6: Reboot and finish the install
+    # 'ctrl + d'
+    # umount -R /mnt
+    # shutdown now
+    - Remove the installation media (USB, CD/DVD etc)
+    - After reboot, login with your user and password (don't use root)
+    # git clone https://aur.archlinux.org/yay.git
+    # cd yay
+    # makepkg -si
+    - Verify that yay has installed correctly
+      # yay --version
+    # cd ..
+    # rm -rf yay
+    # vim /etc/pacman.conf
+    - Uncomment the followind lines (close to the bottom of the file)
+      "[multilib-testing]"
+      "Include = /etc/pacman.d/mirrorlist"
+      "[multilib]"
+      "Include = /etc/pacman.d/mirrorlist"
+    - Quit, writing changes
+    # sudo pacman -S neofetch
+    # sudo vim /etc/bash.bashrc
+    * - If that file is empty quit from it without writing
+      # sudo vim /etc/bashrc
+    - Add a new line at the begining and write neofetch
+    - Quit, writing changes
