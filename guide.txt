@@ -84,7 +84,7 @@ Part 4: Setting up the bootloader and other components of the system
     # vim /etc/locale.gen
     - Uncomment the locale of your choice
       %- Uncomment "en_US.UTF-8 UTF-8" if you're not sure
-    # Quit, writing changes
+    - Quit, writing changes
     # locale-gen
     # echo "LANG={LOCALE}" >> /etc/locale.conf
       %# echo "LANG=en_US.UTF-8" >> /etc/locale.conf
@@ -97,10 +97,10 @@ Part 4: Setting up the bootloader and other components of the system
       *# pacman -S amd-ucode
       *# pacman -S intel-ucode
     *- Install the grub bootloader
-      *- Sometimes, manufacturers implement EFI in a way that forgets bootable drives when removing the YSB, and you'll have to make the install removable
-        # grub-install --target=x86_64-efi --efi-directory=esp --removable
+      *- Sometimes, manufacturers implement EFI in a way that forgets bootable drives when removing the install media, and you'll have to make the install removable
+        # grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable
       *- but for most EFI/UEFI systems you can use the default GRUB installation
-        # grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+        # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
     # grub-mkconfig -o /boot/grub/grub.cfg
     # systemctl enable NetworkManager
 
@@ -137,13 +137,14 @@ Part 6: Finishing the install
     - Delete the yay folder
     # rm -rf yay
     - Add multilib mirrorlist for 32bit apps (wine, steam etc)
-    # vim /etc/pacman.conf
+    # sudo vim /etc/pacman.conf
     - Uncomment the following lines (close to the bottom of the file)
       "[multilib-testing]"
       "Include = /etc/pacman.d/mirrorlist"
       "[multilib]"
       "Include = /etc/pacman.d/mirrorlist"
     - Quit, writing changes
+    # sudo pacman -Syu
     - The most important part of your arch install, the part that helps you brag to your friends
     # sudo pacman -S neofetch
     # sudo vim /etc/bash.bashrc
@@ -159,11 +160,12 @@ part 7: Choosing and installing a desktop environment or window manager (collect
     ! Unlike desktop environments, window managers require additional setup after installation
     ! This guide will not cover that setup, just the install process
     - First update your system
-    # sudo pacman -Syyu
+    # sudo pacman -Syu
     - Next install and enable the desktop manager, xserver and audio driver
     # sudo pacman -S sddm xorg alsa pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack
+    - choose all default options
     # systemctl enable sddm
-    ! Do not reboot or shutdown your system before finishing this part
+    ! Do not reboot or shutdown your system before finishing [Part 7]
     ! You might lock yourself into sddm, without the possibility of opening the console
     *- If you have an nvidia GPU, you need to install additional drivers
       # pacman -S nvidia nvidia-utils
@@ -192,6 +194,7 @@ part 7: Choosing and installing a desktop environment or window manager (collect
 
 part 7.1: KDE Plasma (reccomended for ex-windows users)
     # sudo pacman -S plasma-desktop plasma-pa konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension
+    - Choose all default options
     ! When running a web browser in kde, you might be prompted to create a wallet
     ! If that happens, close the popup and your browser, make sure you properly installed all kwallet components listed below, and try to open your browser again
       - kwallet
