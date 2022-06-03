@@ -4,6 +4,7 @@ If you want to install arch in compatibility BIOS mode, refer to the official gu
 Lines prefixed with '-' are instructions on what to do
 Lines prefixed with '#' are commands that need to be run in the console
 Lines prefixed with '%' are examples for commands that may be too ambiguous for some users
+Lines prefixed with '!' are important notices, which should be read carefuly
 Words in curly brackets like {THIS} should be replaced with the apropriate command or word depending on the context
 Word lists prefixed with '*' represent multiple choices
 Words in apostrophes 'word_1 + word_2 + ... + word_n' usually refer to keyboard commands/shortcuts
@@ -138,3 +139,64 @@ Part 6: Reboot and finish the install
       # sudo vim /etc/bashrc
     - Add a new line at the begining and write neofetch
     - Quit, writing changes
+
+
+part 7: Choosing and installing a desktop environment or window manager (refered to as {DESKTOP} from now on)
+    ! This guide will not follow setting up a window manager after installation
+    - First update your system, and install and enable the desktop manager and xserver
+    # sudo pacman -Syyu
+    # sudo pacman -S sddm xorg alsa pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack
+    # systemctl enable sddm
+    ! Do not reboot or shutdown your system before finishing this part
+    ! You might lock yourself out of the console without everything being set up
+    - Now choose a desktop environment or window manager to install
+    ! You will need to install additional tools for most window managers, while desktop environments usually come with most of the tools you need
+    - Skip to [Part 7.X] that shows how to install {DESKTOP}, then return here
+    - You can install multiple desktop environments and window managers by going to another [Part 7.X]
+    - If {DESKTOP} is not in this guide, search the internet for any requirements it might have
+    * Best additional guides for other desktop environments:
+      - https://www.youtube.com/c/DistroTube
+      - https://www.youtube.com/c/MentalOutlaw
+      - https://www.youtube.com/c/ErikDubois
+    - It's here that you usually install a web browser
+    * Different browsers require different steps, here are some examples
+      - Firefox
+        # sudo pacman -S firefox
+      - Brave Browser
+        # yay -S brave-bin
+      - Chromium (open source version of Google Chrome)
+        # sudo pacman -S chromium
+    - If your prefered browser is not in the list, look it up online
+    - Restart your system
+    - After the restart, in the top-left you will see a selection with all installed desktop environments and window managers
+
+
+part 7.1: KDE Plasma (reccomended for ex-wnidows users)
+    # sudo pacman -S plasma-desktop plasma-pa konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension
+    ! After booting, when running a web browser, you might be prompted to create a wallet
+    ! If that happens, close the popup and your browser, make sure you properly installed all kwallet components listed below, and try to open your browser again
+      - kwallet
+      - kwalletmanager
+      - kwallet-pam
+      - signon-kwallet-extension
+
+
+part 7.2: xfce
+    # sudo pacman -S xfce4 xfce-goodies
+    - You will be prompted with a choice. Just press 'enter/return' on all of them
+
+
+part 7.3: lxqt
+    # sudo pacman -S lxqt breeze-icons termite
+
+
+Part 7.4: i3wm
+    # sudo pacman -S i3
+    ! When asked what to install, write "1 3 4 5"
+    # sudo pacman -S dmenu
+    # yay -S termite
+
+
+Part 7.5: awesome
+    #sudo pacman -S awesome lua
+    # yay -S termite
