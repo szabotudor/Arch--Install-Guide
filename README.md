@@ -5,6 +5,8 @@ An installation guide for arch
 - [Partition the disks](#part-2-partition-the-disks)
 - [Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
 - [Setting up important system components](#part-4-setting-up-important-system-components)
+- [Setting up users and passwords](#part-5-setting-up-users-and-passwords)
+- [Finishing the install](#part-6-finishing-the-install)
 
 # Importan Notices
 - This guide only covers installing arch in EFI/UEFI mode (valid for most modern systems)
@@ -116,3 +118,45 @@ An installation guide for arch
   - Then, run `grub-mkconfig -o /boot/grub/grub.cfg` to automatically configure grub
 - The last step is to enable the network manager, so it starts with Arch:
   - To do this, run `systemctl enable NetworkManager`
+
+# Part-5: Setting up users and passwords
+- To set your root password run `passwd`
+- Now you need to install requirements for sudo users, by running `pacman -S vi sudo`
+- Add a new user by running `useradd --create-home USER_NAME` (replace `USER_NAME` with a name you can remember)
+  - For example, `useradd --create-home john`
+- Run `passwd USER_NAME` to set a password for your user (this should be the same as your root password)
+- Now you should give that user sudo privilages (so you can install apps without having to switch to root)
+  - First, run `usermod -aG wheel USER_NAME`
+  - Then, run `visudo`, and uncomment the line where something similar to `%wheel ALL=(ALL) ALL` first apears
+
+# Part-6: Finishing the install
+- Exit from chroot with the `exit` command, or by pressing `ctrl + d`
+- Unmount all partitions by running `umount -R /mnt`
+- And shutdown you computer by typing `shutdown now`
+- Remove Arch installation media (the USB or CD/DVD that you first booted from)
+- Now start your PC, and in your BIOS choose to boot from the your new Arch installation
+- On the menu that apears now, just choose the first option
+- Login with your user and password (NOT ROOT)
+- To have acces to [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) packages you need to install `yay`
+  - First clone the `yay` repository with `git clone https://aur.archlinux.org/yay.git`
+  - Next, change dir into the `yay` folder with `cd yay`
+  - And install it by running `makepkg -si`
+  - Verify that `yay` has installed correctly by running `yay --version`
+  - And delete the source by going back with `cd ..` and delete the `yay` directory with `rm -rf /yay`
+- Most popular 32-bit programs (like wine or steam) are only available in the multilib repository
+  - To use multilib, you just need to turn it on in the pacman config
+  - Run `sudo vim /etc/pacman.conf`
+  - Uncomment the following lines (close to the bottom of the file) <br />
+    "[multilib]" <br />
+    "Include = /etc/pacman.d/mirrorlist"
+  - Save and close the file
+- Before going further you need make sure your system is up to date
+  - Since Arch is a [rolling release](https://en.wikipedia.org/wiki/Rolling_release) distro, this shouldn't take too long
+  - Run `sudo pacman -Syu`
+- And now, for the most important part of your Arch install; the part that helps you brag to your friends about how "You use Arch by the way"
+  - Run `sudo pacman -S neofetch`
+  - Then, run `sudo vim /etc/bash.bashrc`
+  - Add a new line at the bottom of the file, just saying `neofetch`
+  - Save and close the file
+- Finally, run `neofetch`
+- If you don't plan on doing anything that requires a desktop environment, or any GUI applications, you can stop here
