@@ -3,6 +3,7 @@ An installation guide for arch
 - [Preparation and creating the installation media](#part-0-preparation-and-creating-the-installation-media)
 - [Connect to the internet](#part-1-connect-to-the-internet)
 - [Partition the disks](#part-2-partition-the-disks)
+- [Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
 
 # Importan Notices
 - This guide only covers installing arch in EFI/UEFI mode (valid for most modern systems)
@@ -57,3 +58,18 @@ An installation guide for arch
   - On almost all modern system you can use `btrfs` which is generally faster and more space efficient than the alternative
   - On older systems (more than 15 years old), or in virtual machines it's recommended to use `ext4`
   - Run `mkfs.FILESYSTEM_TYPE /dev/LINUX_SYSTEM_PARTITION_NAME` (replace `FILESYSTEM_TYPE` with `btrfs` and `ext4` respectively)
+
+# Part-3: Mounting the partitions and preparing the base arch install
+- The partitions that you created need to be mounted in in order to install arch on them
+- There is technically no "one good way" to do this, but the unspoken standard is to mount everything to `/mnt`
+  - First, run `mount /dev/LINUX_SYSTEM_PARTITION_NAME /mnt` to mount the root partition (KEEP THE SPACE BEFORE `"/mnt"`)
+  - Then, run `mount --mkdir /dev/EFI_PARTITION_NAME /mnt/boot/efi` to mount the boot partition
+- If you chose to use another location than `/mnt`, from now on replace `/mnt` with your mountpoint
+- To install arch, we first need to install the linux kernel (which is the thing that runs our applications) by running the following command
+  - `pacstrap /mnt base base-devel linux linux-firmware vim git grub efibootmgr networkmanager`
+  - You might notice that I also included `vim` and `git`, which are not part of arch, but they are used later in this guide, so leave them there
+- Now you need to generate `fstab`, which Arch uses to know what partitions to mount at boot
+  - If you want to add an additional partition, you should mount it now to `/mnt/mnt/NAME` by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME_YOU_WANT` (do not replace the second `/mnt` with sommething else)
+  - To generate `fstab` run `genfstab -U /mnt >> /mnt/etc/fstab`
+  - You can check that `fstab` has been [generated correctly](https://wiki.archlinux.org/title/Fstab) by running `vim /mnt/etc/fstab`
+- Finally, after mounting the partition, change root to the newly created arch install with the `arch-chroot /mnt` command
