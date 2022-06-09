@@ -4,6 +4,7 @@ An installation guide for arch
 - [Connect to the internet](#part-1-connect-to-the-internet)
 - [Partition the disks](#part-2-partition-the-disks)
 - [Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
+- [Setting up important system components](#part-4-setting-up-important-system-components)
 
 # Importan Notices
 - This guide only covers installing arch in EFI/UEFI mode (valid for most modern systems)
@@ -64,12 +65,54 @@ An installation guide for arch
 - There is technically no "one good way" to do this, but the unspoken standard is to mount everything to `/mnt`
   - First, run `mount /dev/LINUX_SYSTEM_PARTITION_NAME /mnt` to mount the root partition (KEEP THE SPACE BEFORE `"/mnt"`)
   - Then, run `mount --mkdir /dev/EFI_PARTITION_NAME /mnt/boot/efi` to mount the boot partition
-- If you chose to use another location than `/mnt`, from now on replace `/mnt` with your mountpoint
 - To install arch, we first need to install the linux kernel (which is the thing that runs our applications) by running the following command
   - `pacstrap /mnt base base-devel linux linux-firmware vim git grub efibootmgr networkmanager`
   - You might notice that I also included `vim` and `git`, which are not part of arch, but they are used later in this guide, so leave them there
 - Now you need to generate `fstab`, which Arch uses to know what partitions to mount at boot
-  - If you want to add an additional partition, you should mount it now to `/mnt/mnt/NAME` by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME_YOU_WANT` (do not replace the second `/mnt` with sommething else)
+  - If you want to add an additional partition, you should mount it now to `/mnt/mnt/NAME` (replace `NAME` with the name that you want to see in your file manager)
+  - Do that by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME`
+  - Yes, `/mnt/mnt` is the corect mountpoint because `/mnt` the now the new temporary root partition, so `/mnt/mnt` will just be `/mnt` after you are done installing arch
   - To generate `fstab` run `genfstab -U /mnt >> /mnt/etc/fstab`
   - You can check that `fstab` has been [generated correctly](https://wiki.archlinux.org/title/Fstab) by running `vim /mnt/etc/fstab`
 - Finally, after mounting the partition, change root to the newly created arch install with the `arch-chroot /mnt` command
+
+# Part-4: Setting up important system components
+- First, choose your time zone
+  - Run `ls /usr/share/zoneinfo` to get a list of regions, and locate your `REGION`
+  - Run `ls /usr/share/zoneinfo/REGION` to get a list of cities in your region, and locate your `CITY`
+  - Finally, run `ln -sf /usr/share/zoneinfo/REGION/CITY /etc/localtime` (AGAIN, KEEP THE SPACE BEFORE `/etc/localtime`)
+  - If you found that confusing, here are some examples:
+    - `ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime`
+    - `ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime`
+- Next, sync your hardware clock with `hwclock --systohc`
+- Now you need to choose your locale and generate it
+  - Your locale is your language and your fonts
+  - Run `vim /etc/locale.gen`
+  - Uncomment the locale of your choice (for english that's `en_US.UTF-8 UTF-8`)
+  - Save the file and quit from vim
+  - Run `locale-gen`
+- Now it's time to choose your system language out of the ones you uncommented (this step is necessary even if you only chose one locale)
+  - As you noticed, locales are formed of a language (for english that is `en_US.UTF-8`) and a format (for most locales that is `UTF-8`)
+  - To set your system language, you only need to set the language, and not the format
+  - The language and format are separated by a space, and the format looks like it's part of the language, so it's easy to accidentally include it
+  - If you're unsure which part of the locale is which, just remove the last thing that is separated with a space from the rest
+  - To do that, run `echo "LANG=YOUR_LOCALE_LANGUAGE" >> /etc/locale.conf`
+  - Again, here are examples on that:
+    - `echo "LANG=en_US.UTF-8" >> /etc/locale.conf` for english
+    - `echo "LANG=fr_FR.UTF-8" >> /etc/locale.conf` for french
+- Now to set your hostname (the name that other devices on your network see when you connect to it)
+- To set your hostname, run `echo "HOSTNAME" >> /etc/hostname`
+  - Yet again, examples:
+    - `echo "john-laptop" >> /etc/hostname`
+    - `echo "just-dont-include-spaces-here" >> /etc/hostname`
+- Now it's recommended to create you Initramfs ("initialization magic" as ubuntu calls it)
+  - Technically this should have already been done by pacstrap, but it's better to do it manually anyway
+  - Run `mkinitcpio -P`
+- Now you need to install [microcode]([https://en.wikipedia.org/wiki/Microcode](https://wiki.archlinux.org/title/Microcode)) for you cpu
+  - If you have an amd cpu, run `pacman -S amd-ucode`
+  - And if you have intel, run `pacman -S intel-ucode`
+- Finally, you can install the grub bootloader, to actually be able to boot into Arch
+  - First, run `grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable` to install grub
+  - Then, run `grub-mkconfig -o /boot/grub/grub.cfg` to automatically configure grub
+- The last step is to enable the network manager, so it starts with Arch:
+  - To do this, run `systemctl enable NetworkManager`
