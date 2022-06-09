@@ -1,6 +1,6 @@
 # Arch Install Guide
 An installation guide for arch
-- [Preparation and creating the installation media](#part-0-preparation-and-creating-the-installation-media)
+- [Preparing and creating the installation media](#part-0-preparing-and-creating-the-installation-media)
 - [Connect to the internet](#part-1-connect-to-the-internet)
 - [Partition the disks](#part-2-partition-the-disks)
 - [Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
@@ -12,18 +12,18 @@ An installation guide for arch
 - For a minimal install follow instructions up to and including Part-6
 - You should probably look up a tutorial on vim if you don't know how to use it
 
-# Part-0: Preparation and creating the installation media
+# Part-0: Preparing and creating the installation media
 - Download the arch iso from the [Official Arch Linux Website](https://archlinux.org/download/)
 - Flash that iso to a USB drive or disk 
 - The easiest way to do it is by using [Balena Etcher](https://www.balena.io/etcher/)
   - Choose the arch iso and the device you want to flash it to, and hit the `flash` button
-- After you're done, boot from that device (I won't include instructions on that, since this may vary from system to system, just search how to boot from a USB or CD/DVD on your machine
-- When booting from the installation media you will be presented with a menu. Just choose the first option, and if it doesn't work, force reboot and choose another
+- After you're done, boot from that device (I won't include instructions on how to do that, since getting into a computer's BIOS and choosing a bootable device differs from system to system; just search how to boot from a USB or CD/DVD on your machine)
+- When booting from the installation media you will be presented with a menu. Just choose the first option, and if it doesn't work, force a reboot and choose another
 
 # Part-1: Connect to the internet
 - If you have a wired connection, skip to the last step in this part
 - The arch installer has a built-in tool for using a wireless connection. To use it, run `iwctl`
-- Now it's time to find what wireless modules you have in your PC/laptop. Run `station list` to print out a list of "stations" (or modules)
+- Now it's time to find what wireless modules you have in your PC/laptop. Run `station list` to print out a list of "stations" (the wifi chips in your computer)
 - Now run `station STATION_NAME get-networks` to get a list of available networks nearby
 - Connect to one of the networks by running `station STATION_NAME connect NETWORK_NAME`
 - You can now exit from iwctl by typing `exit`, or by pressing `ctrl + d`
@@ -46,7 +46,7 @@ An installation guide for arch
   - If you have less than 8G of RAM it's recommended (although not mandatory) to create a swap partition
   - If you have less than 1G of RAM, swap is almost mandatory if you want your system to be stable
   - If you want to use the `Hibernate` feature, the swap partition should be at least AMMOUNT_OF_RAM + 2G
-- After creating the swap partition, set its type to `Linux swap`
+- If you created a swap partition, set its type to `Linux swap`
 - Use the remainder of the disk to create a `Linux filesystem` partition
 - Write the changes to disk, then quit from cfdisk
 - Running `lsblk` again, you should see the partitions you just created
@@ -71,7 +71,7 @@ An installation guide for arch
 - Now you need to generate `fstab`, which Arch uses to know what partitions to mount at boot
   - If you want to add an additional partition, you should mount it now to `/mnt/mnt/NAME` (replace `NAME` with the name that you want to see in your file manager)
   - Do that by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME`
-  - Yes, `/mnt/mnt` is the corect mountpoint because `/mnt` the now the new temporary root partition, so `/mnt/mnt` will just be `/mnt` after you are done installing arch
+  - Yes, `/mnt/mnt` is the corect mountpoint because `/mnt` is the temporary root partition, so `/mnt/mnt` will just be `/mnt` after you are done installing arch and you rebooted your computer
   - To generate `fstab` run `genfstab -U /mnt >> /mnt/etc/fstab`
   - You can check that `fstab` has been [generated correctly](https://wiki.archlinux.org/title/Fstab) by running `vim /mnt/etc/fstab`
 - Finally, after mounting the partition, change root to the newly created arch install with the `arch-chroot /mnt` command
@@ -92,23 +92,23 @@ An installation guide for arch
   - Save the file and quit from vim
   - Run `locale-gen`
 - Now it's time to choose your system language out of the ones you uncommented (this step is necessary even if you only chose one locale)
-  - As you noticed, locales are formed of a language (for english that is `en_US.UTF-8`) and a format (for most locales that is `UTF-8`)
+  - Locales are formed of a language (for english that is `en_US.UTF-8`) and a format (for most locales that is `UTF-8`)
   - To set your system language, you only need to set the language, and not the format
   - The language and format are separated by a space, and the format looks like it's part of the language, so it's easy to accidentally include it
   - If you're unsure which part of the locale is which, just remove the last thing that is separated with a space from the rest
-  - To do that, run `echo "LANG=YOUR_LOCALE_LANGUAGE" >> /etc/locale.conf`
+  - To set the system language, run `echo "LANG=YOUR_LOCALE_LANGUAGE" >> /etc/locale.conf`
   - Again, here are examples on that:
     - `echo "LANG=en_US.UTF-8" >> /etc/locale.conf` for english
     - `echo "LANG=fr_FR.UTF-8" >> /etc/locale.conf` for french
-- Now to set your hostname (the name that other devices on your network see when you connect to it)
+- Now to set your hostname (the name that other devices on your network see when you connect to the internet)
 - To set your hostname, run `echo "HOSTNAME" >> /etc/hostname`
   - Yet again, examples:
     - `echo "john-laptop" >> /etc/hostname`
     - `echo "just-dont-include-spaces-here" >> /etc/hostname`
-- Now it's recommended to create you Initramfs ("initialization magic" as ubuntu calls it)
+- Now it's recommended to create the initramfs ("initialization magic" as ubuntu calls it)
   - Technically this should have already been done by pacstrap, but it's better to do it manually anyway
   - Run `mkinitcpio -P`
-- Now you need to install [microcode]([https://en.wikipedia.org/wiki/Microcode](https://wiki.archlinux.org/title/Microcode)) for you cpu
+- Now you need to install [microcode](https://wiki.archlinux.org/title/Microcode) for your CPU
   - If you have an amd cpu, run `pacman -S amd-ucode`
   - And if you have intel, run `pacman -S intel-ucode`
 - Finally, you can install the grub bootloader, to actually be able to boot into Arch
