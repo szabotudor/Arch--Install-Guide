@@ -134,7 +134,7 @@ An installation guide for arch
 - Unmount all partitions by running `umount -R /mnt`
 - And shutdown you computer by typing `shutdown now`
 - Remove Arch installation media (the USB or CD/DVD that you first booted from)
-- Now start your PC, and in your BIOS choose to boot from the your new Arch installation
+- Now start your PC, and in your BIOS choose to boot from your new Arch installation
 - On the menu that apears now, just choose the first option
 - Login with your user and password (NOT ROOT)
 - To have acces to [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) packages you need to install `yay`
@@ -159,4 +159,6 @@ An installation guide for arch
   - Add a new line at the bottom of the file, just saying `neofetch`
   - Save and close the file
 - Finally, run `neofetch`
-- If you don't plan on doing anything that requires a desktop environment, or any GUI applications, you can stop here
+- Congrats! You have succesfully installed Arch
+  - If you don't plan on doing anything that requires a desktop environment, or any GUI applications, you can stop here
+  - For the people who want a graphical environment, continue to the next part
