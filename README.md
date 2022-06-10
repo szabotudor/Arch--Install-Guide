@@ -208,7 +208,7 @@ An installation guide for arch
 
 ### Part-7.4: i3wm
 - Run `sudo pacman -S i3 dmenu`
-- When prompted with a choice type `1 3 4 5`(keep the space between them) and press enter
+- When prompted with a choice type `1 3 4 5`(keep the space between the numbers) and press enter
 - And then run `yay -S termite`
 
 ### Part-7.5: Awesome WM
