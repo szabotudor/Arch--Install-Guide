@@ -27,7 +27,7 @@ An installation guide for arch
 # Part-1: Connect to the internet
 - If you have a wired connection, skip to the last step in this part
 - The arch installer has a built-in tool for using a wireless connection. To use it, run `iwctl`
-- Now it's time to find what wireless modules you have in your PC/laptop. Run `station list` to print out a list of "stations" (the wifi chips in your computer)
+- Now it's time to find what wireless modules you have in your PC/laptop. Run `station list` to print out a list of "stations" (the wifi modules in your computer)
 - Now run `station STATION_NAME get-networks` to get a list of available networks nearby
 - Connect to one of the networks by running `station STATION_NAME connect NETWORK_NAME`
 - You can now exit from iwctl by typing `exit`, or by pressing `ctrl + d`
