@@ -7,8 +7,9 @@ An installation guide for arch
 - [Setting up important system components](#part-4-setting-up-important-system-components)
 - [Setting up users and passwords](#part-5-setting-up-users-and-passwords)
 - [Finishing the install](#part-6-finishing-the-install)
+- [Part-7: Installing a desktop environment or window manager](#part-7-installing-a-desktop-environment-or-window-manager)
 
-# Importan Notices
+# Important Notices
 - This guide only covers installing arch in EFI/UEFI mode (valid for most modern systems)
   - If you want to install arch in compatibility BIOS mode, refer to [this part](https://wiki.archlinux.org/title/Installation_guide#Example_layouts) in the official guide along with this one
 - For a minimal install follow instructions up to and including Part-6
@@ -56,7 +57,7 @@ An installation guide for arch
 - Create a `fat32` filesystem on the `EFI` partition, by running `mkfs.fat -F32 /dev/EFI_PARTITION_NAME`
 - If you made a swap partition, run the following two commands:
   - `mkswap /dev/SWAP_PARTITION_NAME`
-  - `swapop /dev/SWAP_PARTITION_NAME`
+  - `swapon /dev/SWAP_PARTITION_NAME`
 - Now to choose filesystem type
   - On almost all modern system you can use `btrfs` which is generally faster and more space efficient than the alternative
   - On older systems (more than 15 years old), or in virtual machines it's recommended to use `ext4`
@@ -162,3 +163,53 @@ An installation guide for arch
 - Congrats! You have succesfully installed Arch
   - If you don't plan on doing anything that requires a desktop environment, or any GUI applications, you can stop here
   - For the people who want a graphical environment, continue to the next part
+
+# Part-7: Installing a desktop environment or window manager
+- First, it's important to understand the difference between a desktop environment and a window manager
+  - Window managers do just that: they manage windows
+  - Meanwhile, desktop environments take care of everything else too, like a GUI for settings, a desktop where you can place shortcuts to programs, a "start menu", where programs are better organized, and many other things
+  - Usually, people install a window manager because it's very lightweight. i3wm (which is one of the more popular window managers) doesn't use more than 400M
+  - Desktop environments on the other hand, like Kde Plasma (which is usually recommended for people coming from windows) end up using almost 1G
+  - For the sake of impartiality, I'm going to leave my opinion on both window managers and desktop environments, but unless you are ready for a full commitment, and especially if you're used to Windows, I suggest you start with something like Plasma
+  - You can change your mind later, or even install multiple window managers and desktop environments to test them out
+- First we need to install a display manager like sddm (you can look at display managers as the login screen), the xorg server (a program that enables graphical applications to be drawn to the screen), and an audio driver 
+  - You can do that with `sudo pacman -S sddm xorg alsa pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack`
+  - You'll be presented with choices for each of the packages above; for all of them simply press enter and the defaults will be installed
+- Now we need to enable sddm to start with the computer
+  - Once you do this, DO NOT restart until you finish Part 7, or you might end up getting your computer stuck in the sddm login screen with no GUI frontend to boot into
+  - To enable sddm run `systemctl enable sddm`
+- Now find a desktop environment or window manager that you think suits you, or choose multiple, then go to Part 7.X to install yours, and come back here when you're done
+- This guide does not cover setting up window managers, since they usually require their own guide to get working properly
+- If your prefered desktop environment or window manager isn't in this guide, you can look up a tutorial; I presonaly recommend:
+  - [Distro Watch](https://www.youtube.com/c/DistroTube)
+  - [Mental Outlaw](https://www.youtube.com/c/MentalOutlaw)
+  - [Erik Dubois](https://www.youtube.com/c/ErikDubois)
+  - [Tech Hut](https://www.youtube.com/c/TechHutHD)
+- It's also here that you usually install a web browser, but you can do that later
+  - Firefox: `sudo pacman -S firefox`
+  - Brave Browser: `yay -S brave-bin`
+  - Chromium: `sudo pacman -S chromium`
+- Finally, restart your computer
+- After the restart, you'll see in the top left a drop-down menu with all of the desktop environments and window managers you installed
+- Simply choose which you want, and login
+
+## Part-7.1: Kde Plasma
+- Run `sudo pacman -S plasma konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension`, and when presented with a choice, press enter to install everything
+- When prompted with a large selection of packages, just press enter to install all of them
+
+## Part 7.2: xfce
+- Run `sudo pacman -S xfce4 xfce-goodies`
+- You will be prompted with a few choices
+- Press enter on all of them
+
+## Part 7.3: lxqt
+- Run `sudo pacman -S lxqt breeze-icons termite`
+
+## Part 7.4: i3wm
+- Run `sudo pacman -S i3 dmenu`
+- When prompted with a choice type `1 3 4 5`(keep the space between them) and press enter
+- And then run `yay -S termite`
+
+## Part 7.5: Awesome WM
+- Run `sudo pacman -S awesome lua`
+- Then run `yay -S termite`
