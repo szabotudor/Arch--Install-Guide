@@ -1,13 +1,14 @@
 # Arch Install Guide
 An installation guide for arch
-- [Preparing and creating the installation media](#part-0-preparing-and-creating-the-installation-media)
-- [Connect to the internet](#part-1-connect-to-the-internet)
-- [Partition the disks](#part-2-partition-the-disks)
-- [Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
-- [Setting up important system components](#part-4-setting-up-important-system-components)
-- [Setting up users and passwords](#part-5-setting-up-users-and-passwords)
-- [Finishing the install](#part-6-finishing-the-install)
+- [Part-0: Preparing and creating the installation media](#part-0-preparing-and-creating-the-installation-media)
+- [Part-1: Connect to the internet](#part-1-connect-to-the-internet)
+- [Part-2: Partition the disks](#part-2-partition-the-disks)
+- [Part-3: Mounting the partitions and preparing the base arch install](#part-3-mounting-the-partitions-and-preparing-the-base-arch-install)
+- [Part-4: Setting up important system components](#part-4-setting-up-important-system-components)
+- [Part-5: Setting up users and passwords](#part-5-setting-up-users-and-passwords)
+- [Part-6: Finishing the install](#part-6-finishing-the-install)
 - [Part-7: Installing a desktop environment or window manager](#part-7-installing-a-desktop-environment-or-window-manager)
+- [Part-8: Installing nvidia drivers](#part-8-installing-nvidia-drivers)
 
 # Important Notices
 - This guide only covers installing arch in EFI/UEFI mode (valid for most modern systems)
@@ -193,23 +194,33 @@ An installation guide for arch
 - After the restart, you'll see in the top left a drop-down menu with all of the desktop environments and window managers you installed
 - Simply choose which you want, and login
 
-## Part-7.1: Kde Plasma
+### Part-7.1: Kde Plasma
 - Run `sudo pacman -S plasma konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension`, and when presented with a choice, press enter to install everything
 - When prompted with a large selection of packages, just press enter to install all of them
 
-## Part 7.2: xfce
+### Part-7.2: xfce
 - Run `sudo pacman -S xfce4 xfce-goodies`
 - You will be prompted with a few choices
 - Press enter on all of them
 
-## Part 7.3: lxqt
+### Part-7.3: lxqt
 - Run `sudo pacman -S lxqt breeze-icons termite`
 
-## Part 7.4: i3wm
+### Part-7.4: i3wm
 - Run `sudo pacman -S i3 dmenu`
 - When prompted with a choice type `1 3 4 5`(keep the space between them) and press enter
 - And then run `yay -S termite`
 
-## Part 7.5: Awesome WM
+### Part-7.5: Awesome WM
 - Run `sudo pacman -S awesome lua`
 - Then run `yay -S termite`
+
+# Part-8: Installing nvidia drivers
+- Run the following commands:
+  - `pacman -S nvidia nvidia-utils`
+  - `yay -S optimus-manager`
+  - `yay -S optimus-manager-qt`
+- Restart your computer
+- You should see a new icon pop up somewhere on your taskbar
+  - Press that icon and a menu should open
+  - Options on that menu are pretty self-explanatory
