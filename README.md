@@ -179,12 +179,40 @@ An installation guide for arch
 - Now we need to enable sddm to start with the computer
   - Once you do this, DO NOT restart until you succesfully installed at least one desktop environment or window manager, or you might end up getting your computer stuck on the sddm login screen with no GUI frontend to boot into
   - To enable sddm run `systemctl enable sddm`
-- Now find a desktop environment or window manager that you think suits you, or choose multiple, then go to Part 7.X to install it, and come back here when you're done
-- If your prefered desktop environment or window manager isn't in this guide, you can look up a tutorial; I presonaly recommend:
+- Now find a desktop environment or window manager that you think suits you, or choose multiple, then skip to Part 7.X to install it
+- For ex-Windows users, I recommend Kde Plasma, since it's the most similar
+
+### Part-7.1: Kde Plasma
+- Run `sudo pacman -S plasma konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension`
+- When prompted with a large selection of packages, just press enter to install all of them
+
+### Part-7.2: xfce
+- Run `sudo pacman -S xfce4 xfce-goodies`
+- You will be prompted with a few choices
+- Press enter on all of them
+
+### Part-7.3: lxqt
+- Run `sudo pacman -S lxqt breeze-icons`
+- And then run `yay -S termite`
+
+### Part-7.4: i3wm
+- Run `sudo pacman -S i3 dmenu`
+- When prompted with a choice type `1 3 4 5`(keep the space between the numbers) and press enter
+- And then run `yay -S termite`
+
+### Part-7.5: Awesome WM
+- Run `sudo pacman -S awesome lua`
+- Then run `yay -S termite`
+
+### Other
+- If your prefered desktop environment or window manager isn't in this guide, you can look up a tutorial
+- Here are some youtubers who make good linux tutorials
   - [Distro Watch](https://www.youtube.com/c/DistroTube)
   - [Mental Outlaw](https://www.youtube.com/c/MentalOutlaw)
   - [Erik Dubois](https://www.youtube.com/c/ErikDubois)
   - [Tech Hut](https://www.youtube.com/c/TechHutHD)
+
+### When you're done installing your desktop environment or window manager
 - This guide does not cover setting up window managers, since they usually require their own guide to get working properly
 - If you want, it is now safe to restart your system
 - After the restart, you'll see in the top left a drop-down menu with all of the desktop environments and window managers you installed
@@ -196,27 +224,6 @@ An installation guide for arch
 - Another program that people recommend is a GUI package manager, so you don't have to use the command line every time you want to install something
   - The most commong GUI package manager people use is Octopi, which you can install with `yay -S octopi` (it might take a while to complete)
   - Another popular GUI package manager is Pamac, which you can install with `yay -S pamac-aur` (this might also take a long time to install)
-
-### Part-7.1: Kde Plasma
-- Run `sudo pacman -S plasma konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension`, and when presented with a choice, press enter to install everything
-- When prompted with a large selection of packages, just press enter to install all of them
-
-### Part-7.2: xfce
-- Run `sudo pacman -S xfce4 xfce-goodies`
-- You will be prompted with a few choices
-- Press enter on all of them
-
-### Part-7.3: lxqt
-- Run `sudo pacman -S lxqt breeze-icons termite`
-
-### Part-7.4: i3wm
-- Run `sudo pacman -S i3 dmenu`
-- When prompted with a choice type `1 3 4 5`(keep the space between the numbers) and press enter
-- And then run `yay -S termite`
-
-### Part-7.5: Awesome WM
-- Run `sudo pacman -S awesome lua`
-- Then run `yay -S termite`
 
 # Part-8: Installing nvidia drivers
 - Run the following commands:
