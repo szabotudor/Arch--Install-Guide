@@ -18,10 +18,10 @@ An installation guide for arch
 
 # Part-0: Preparing and creating the installation media
 - Download the arch iso from the [Official Arch Linux Website](https://archlinux.org/download/)
-- Flash that iso to a USB drive or disk 
-- The easiest way to do it is by using [Balena Etcher](https://www.balena.io/etcher/)
+- Flash that iso to a USB drive
+- The easiest way to do that is using [Balena Etcher](https://www.balena.io/etcher/)
   - Choose the arch iso and the device you want to flash it to, and hit the `flash` button
-- After you're done, boot from that device (I won't include instructions on how to do that, since getting into a computer's BIOS and choosing a bootable device differs from system to system; just search how to boot from a USB or CD/DVD on your machine)
+- After you're done, boot from that device (I won't include instructions on how to do that, since getting into a computer's BIOS and choosing a bootable device differs from system to system; just search how to boot from a USB on your machine)
 - When booting from the installation media you will be presented with a menu. Just choose the first option, and if it doesn't work, force a reboot and choose another
 
 # Part-1: Connect to the internet
@@ -135,25 +135,25 @@ An installation guide for arch
 - Exit from chroot with the `exit` command, or by pressing `ctrl + d`
 - Unmount all partitions by running `umount -R /mnt`
 - And shutdown you computer by typing `shutdown now`
-- Remove Arch installation media (the USB or CD/DVD that you first booted from)
-- Now start your PC, and in your BIOS choose to boot from your new Arch installation
-- On the menu that apears now, just choose the first option
+- Remove Arch installation media (the USB that you first booted from)
+- Now turn on your computer, and in your BIOS choose to boot from your new Arch installation
+- On the menu that apears now, choose the first option
 - Login with your user and password (NOT ROOT)
 - To have acces to [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) packages you need to install `yay`
   - First clone the `yay` repository with `git clone https://aur.archlinux.org/yay.git`
   - Next, change dir into the `yay` folder with `cd yay`
-  - And install it by running `makepkg -si`
+  - And start the installation by running `makepkg -si`
   - Verify that `yay` has installed correctly by running `yay --version`
-  - And delete the source by going back with `cd ..` and delete the `yay` directory with `rm -rf /yay`
+  - And finally go back with `cd ..` and delete the `yay` directory with `rm -rf /yay`
 - Most popular 32-bit programs (like wine or steam) are only available in the multilib repository
-  - To use multilib, you just need to turn it on in the pacman config
+  - To use multilib, you just need to turn it on in the pacman configuration file
   - Run `sudo vim /etc/pacman.conf`
   - Uncomment the following lines (close to the bottom of the file) <br />
     "[multilib]" <br />
     "Include = /etc/pacman.d/mirrorlist"
   - Save and close the file
 - Before going further you need make sure your system is up to date
-  - Since Arch is a [rolling release](https://en.wikipedia.org/wiki/Rolling_release) distro, this shouldn't take too long
+  - Since Arch is a [rolling release](https://en.wikipedia.org/wiki/Rolling_release) distro, the iso you downloaded is almost certanly up-to-date, so this shouldn't take too long
   - Run `sudo pacman -Syu`
 - And now, for the most important part of your Arch install; the part that helps you brag to your friends about how "You use Arch by the way"
   - Run `sudo pacman -S neofetch`
@@ -163,7 +163,7 @@ An installation guide for arch
 - Finally, run `neofetch`
 - Congrats! You have succesfully installed Arch
   - If you don't plan on doing anything that requires a desktop environment, or any GUI applications, you can stop here
-  - For the people who want a graphical environment, continue to the next part
+  - For the people who want a graphical environment, continue to Part 7
 
 # Part-7: Installing a desktop environment or window manager
 - First, it's important to understand the difference between a desktop environment and a window manager
