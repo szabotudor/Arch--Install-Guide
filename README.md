@@ -177,22 +177,25 @@ An installation guide for arch
   - You can do that with `sudo pacman -S sddm xorg alsa pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack`
   - You'll be presented with choices for each of the packages above; for all of them simply press enter and the defaults will be installed
 - Now we need to enable sddm to start with the computer
-  - Once you do this, DO NOT restart until you finish Part 7, or you might end up getting your computer stuck in the sddm login screen with no GUI frontend to boot into
+  - Once you do this, DO NOT restart until you succesfully installed at least one desktop environment or window manager, or you might end up getting your computer stuck on the sddm login screen with no GUI frontend to boot into
   - To enable sddm run `systemctl enable sddm`
-- Now find a desktop environment or window manager that you think suits you, or choose multiple, then go to Part 7.X to install yours, and come back here when you're done
-- This guide does not cover setting up window managers, since they usually require their own guide to get working properly
+- Now find a desktop environment or window manager that you think suits you, or choose multiple, then go to Part 7.X to install it, and come back here when you're done
 - If your prefered desktop environment or window manager isn't in this guide, you can look up a tutorial; I presonaly recommend:
   - [Distro Watch](https://www.youtube.com/c/DistroTube)
   - [Mental Outlaw](https://www.youtube.com/c/MentalOutlaw)
   - [Erik Dubois](https://www.youtube.com/c/ErikDubois)
   - [Tech Hut](https://www.youtube.com/c/TechHutHD)
+- This guide does not cover setting up window managers, since they usually require their own guide to get working properly
+- If you want, it is now safe to restart your system
+- After the restart, you'll see in the top left a drop-down menu with all of the desktop environments and window managers you installed
+- Simply choose which you want, and login
 - It's also here that you usually install a web browser, but you can do that later
   - Firefox: `sudo pacman -S firefox`
   - Brave Browser: `yay -S brave-bin`
-  - Chromium: `sudo pacman -S chromium`
-- Finally, restart your computer
-- After the restart, you'll see in the top left a drop-down menu with all of the desktop environments and window managers you installed
-- Simply choose which you want, and login
+  - Chromium(chrome): `sudo pacman -S chromium`
+- Another program that people recommend is a GUI package manager, so you don't have to use the command line every time you want to install something
+  - The most commong GUI package manager people use is Octopi, which you can install with `yay -S octopi` (it might take a while to complete)
+  - Another popular GUI package manager is Pamac, which you can install with `yay -S pamac-aur` (this might also take a long time to install)
 
 ### Part-7.1: Kde Plasma
 - Run `sudo pacman -S plasma konsole dolphin kwallet kwalletmanager kwallet-pam signon-kwallet-extension`, and when presented with a choice, press enter to install everything
@@ -217,10 +220,12 @@ An installation guide for arch
 
 # Part-8: Installing nvidia drivers
 - Run the following commands:
-  - `pacman -S nvidia nvidia-utils`
+  - `pacman -S nvidia nvidia-utils nvidia-settings`
   - `yay -S optimus-manager`
   - `yay -S optimus-manager-qt`
 - Restart your computer
 - You should see a new icon pop up somewhere on your taskbar
-  - Press that icon and a menu should open
-  - Options on that menu are pretty self-explanatory
+  - Press that icon and a menu should open (options on that menu are pretty self-explanatory)
+  - You can use this menu to enable/disable your graphics card, or change settings that are otherwise inaccessible on linux
+- Another program that was installed here is Nvidia X Server Settings (included in the `nvidia-settings` package)
+  - You can use this program to change more advanced graphiccs settings globally or per-program
