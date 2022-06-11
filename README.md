@@ -139,6 +139,7 @@ An installation guide for arch
 - Now turn on your computer, and in your BIOS choose to boot from your new Arch installation
 - On the menu that apears now, choose the first option
 - Login with your user and password (NOT ROOT)
+- Run `sudo nmtui` to connect to the internet
 - To have acces to [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) packages you need to install `yay`
   - First clone the `yay` repository with `git clone https://aur.archlinux.org/yay.git`
   - Next, change dir into the `yay` folder with `cd yay`
