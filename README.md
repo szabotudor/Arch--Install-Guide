@@ -25,12 +25,15 @@ An installation guide for arch
 - When booting from the installation media you will be presented with a menu. Just choose the first option, and if it doesn't work, force a reboot and choose another
 
 # Part-1: Connect to the internet
-- If you have a wired connection, skip to the last step in this part
+#### Wireless connection
 - The arch installer has a built-in tool for using a wireless connection. To use it, run `iwctl`
 - Now it's time to find what wireless modules you have in your PC/laptop. Run `station list` to print out a list of "stations" (the wifi modules in your computer)
 - Now run `station STATION_NAME get-networks` to get a list of available networks nearby
 - Connect to one of the networks by running `station STATION_NAME connect NETWORK_NAME`
 - You can now exit from iwctl by typing `exit`, or by pressing `ctrl + d`
+#### Wired connection or when installing as a virtual machine
+- You don't need to do anything if you have a wired connection
+#### Do this for both wired and wireless connections:
 - To ensure that the system clock is accurate run `timedatectl set-ntp true`
 
 # Part-2: Partition the disks
@@ -42,17 +45,17 @@ An installation guide for arch
 - Run `cfdisk /dev/DISK_NAME` to start creating the partitions
   - If you are presented with a choice between `DOS` or `GPT` choose `GPT`
 - Delete any existing partitions
-- First you will neet to create a new partition of 512M
-  - Set its type to `EFI system partition`
+- First you will need to create a new partition of 512M
+  - Set its `Type` to `EFI system partition`
   - This partition will be used for the bootloader (in our case grub), which is the thing that tells the bios where to boot from
 - Choose wether you want/need swap
-  - Any swap partition should at be at leas 4G
-  - If you have less than 8G of RAM it's recommended (although not mandatory) to create a swap partition
+  - If you create a swap partition should at be at leas 2G
+  - If you have less than 4G of RAM it's recommended (although not mandatory) to create a swap partition
   - If you have less than 1G of RAM, swap is almost mandatory if you want your system to be stable
   - If you want to use the `Hibernate` feature, the swap partition should be at least AMMOUNT_OF_RAM + 2G
 - If you created a swap partition, set its type to `Linux swap`
-- Use the remainder of the disk to create a `Linux filesystem` partition
-- Write the changes to disk, then quit from cfdisk
+- Use the remaining space to create a `Linux filesystem` partition
+- `Write` the changes to disk, then `Quit` from cfdisk
 - Running `lsblk` again, you should see the partitions you just created
   - If you don't see your changes, run the previous command again, and make sure you didn't forget to `Write` the changes before quiting from cfdisk
 - Create a `fat32` filesystem on the `EFI` partition, by running `mkfs.fat -F32 /dev/EFI_PARTITION_NAME`
@@ -65,7 +68,7 @@ An installation guide for arch
   - Run `mkfs.FILESYSTEM_TYPE /dev/LINUX_SYSTEM_PARTITION_NAME` (replace `FILESYSTEM_TYPE` with `btrfs` and `ext4` respectively)
 
 # Part-3: Mounting the partitions and preparing the base arch install
-- The partitions that you created need to be mounted in in order to install arch on them
+- The partitions that you created need to be mounted in order to install arch on them
 - There is technically no "one good way" to do this, but the unspoken standard is to mount everything to `/mnt`
   - First, run `mount /dev/LINUX_SYSTEM_PARTITION_NAME /mnt` to mount the root partition (KEEP THE SPACE BEFORE `"/mnt"`)
   - Then, run `mount --mkdir /dev/EFI_PARTITION_NAME /mnt/boot/efi` to mount the boot partition
