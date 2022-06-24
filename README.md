@@ -191,7 +191,7 @@ An installation guide for arch
 - When prompted with a large selection of packages, just press enter to install all of them
 
 ### Part-7.2: xfce
-- Run `sudo pacman -S xfce4 xfce-goodies`
+- Run `sudo pacman -S xfce4 xfce4-goodies`
 - You will be prompted with a few choices
 - Press enter on all of them
 
