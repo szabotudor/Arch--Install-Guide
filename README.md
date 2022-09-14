@@ -77,8 +77,8 @@ An installation guide for arch
   - You might notice that I also included `vim` and `git`, which are not part of arch, but they are used later in this guide, so leave them there
 - Now you need to generate `fstab`, which Arch uses to know what partitions to mount at boot
   - If you want to add an additional partition, you should mount it now to `/mnt/mnt/NAME` (replace `NAME` with the name that you want to see in your file manager)
-  - Do that by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME`
-  - Yes, `/mnt/mnt` is the corect mountpoint because `/mnt` is the temporary root partition, so `/mnt/mnt` will just be `/mnt` after you are done installing arch and you rebooted your computer
+    - Do that by running `mount --mkdir /dev/OTHER_PARTITION_NAME /mnt/mnt/NAME`
+    - Yes, `/mnt/mnt` is the corect mountpoint because `/mnt` is the temporary root partition, so `/mnt/mnt` will just be `/mnt` after you are done installing arch and you rebooted your computer
   - To generate `fstab` run `genfstab -U /mnt >> /mnt/etc/fstab`
   - You can check that `fstab` has been [generated correctly](https://wiki.archlinux.org/title/Fstab) by running `vim /mnt/etc/fstab`
 - Finally, after mounting the partition, change root to the newly created arch install with the `arch-chroot /mnt` command
